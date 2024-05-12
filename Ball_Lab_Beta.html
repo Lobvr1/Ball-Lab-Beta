@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bouncing Ball Animation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+
+    .container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .ball {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background-color: #007bff;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="container">
+    <div class="ball" id="ball"></div>
+  </div>
+
+  <script>
+    const container = document.getElementById('container');
+    const ball = document.getElementById('ball');
+
+    let x = 0;
+    let y = 0;
+    let dx = 2;
+    let dy = 2;
+    let gravity = 0.1;
+
+    function moveBall() {
+      x += dx;
+      y += dy;
+      dy += gravity;
+
+      if (x + dx > window.innerWidth - 50 || x + dx < 0) {
+        dx = -dx;
+      }
+
+      if (y + dy > window.innerHeight - 50 || y + dy < 0) {
+        dy = -dy * 0.9;
+        dx *= 0.9;
+      }
+
+      ball.style.left = x + 'px';
+      ball.style.top = y + 'px';
+
+      requestAnimationFrame(moveBall);
+    }
+
+    moveBall();
+
+    ball.addEventListener('click', createBall);
+
+    function createBall(e) {
+      const newBall = document.createElement('div');
+      newBall.classList.add('ball');
+      newBall.style.left = `${e.clientX}px`;
+      newBall.style.top = `${e.clientY}px`;
+      container.appendChild(newBall);
+      x = e.clientX;
+      y = e.clientY;
+      dx = Math.random() * 4 - 2;
+      dy = Math.random() * 4 - 2;
+    }
+
+    container.addEventListener('click', function() {
+      createBall(event);
+    });
+  </script>
+</body>
+</html>
